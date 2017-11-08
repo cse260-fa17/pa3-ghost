@@ -1,3 +1,4 @@
+COMET = $(shell hostname | grep comet | wc -c)
 BANG    =       $(shell expr match `hostname` ccom-bang)
 BANG-COMPUTE   =  $(shell expr match `hostname` compute)
 BANG-BANG = $(shell echo $(BANG)\&$(BANG-COMPUTE))
@@ -24,9 +25,14 @@ ifneq ($(STAMPEDE), 0)
 # REPORT =  -qopt-report=5
 
 # REPORT =  -qopt-report-phase=vec
-else
+#else
 endif
 
+ifneq ($(COMET), 0)
+ include $(PUB)/Arch/arch.intel.c++11.generic
+#include $(PUB)/Arch/arch.gnu-c++11.generic
+ REPORT =  -qopt-report=1
+ endif
 
 # set vec=1 if you want to vectorize by hand
 ifeq ($(vec),1)
